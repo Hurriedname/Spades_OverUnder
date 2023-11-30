@@ -56,7 +56,7 @@ extern "C" {
 #define LV_COLOR_MAGENTA LV_COLOR_MAKE(0xFF,0x00,0xFF)
 #define LV_COLOR_PURPLE  LV_COLOR_MAKE(0x80,0x00,0x80)
 #define LV_COLOR_ORANGE  LV_COLOR_MAKE(0xFF,0xA5,0x00)
-
+#define LV_COLOR_GOLD    LV_COLOR_MAKE(0xFF,0xD7,0x00)
 enum {
     LV_OPA_TRANSP =  0,
     LV_OPA_0      =  0,

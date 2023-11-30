@@ -1,6 +1,29 @@
 #include "main.h"
 #include "lemlib/api.hpp"
 
+lv_obj_t * nameBox;
+lv_obj_t * describingBox;
+lv_obj_t * spade1;
+lv_obj_t * spade2;
+lv_obj_t * spade3;
+lv_obj_t * spade4;
+lv_obj_t * nextButton;
+lv_obj_t * previousButton;
+lv_obj_t * page1;
+lv_obj_t * page2;
+
+lv_style_t buttonPressed;
+lv_style_t buttonReleased;
+
+static lv_res_t btn_click_action(lv_obj_t * btn){
+	uint8_t id = lv_obj_get_free_num(btn);
+	if(id == 0){
+		char buffer[100];
+		sprintf(buffer, "Button was Clicked %i msec from start", pros::millis);
+		lv_label_set_text(nameBox, buffer);
+	}
+	return LV_RES_OK;
+}
 //Define IMU
 pros::Imu inertialSensor (12);
 
@@ -60,6 +83,42 @@ lemlib::Chassis spadeDrive(drivetrain, linearController, angularController, sens
 void testAuton(){
 	spadeDrive.moveTo(0, 0, 0, 1000);
 }
+//Very Basic Auton Selector
+/*int autonSelection(){
+	int auton;
+	int line = 1;
+	bool pressed;
+	pros::screen::set_pen(COLOR_WHITE);
+	pros::screen::fill_rect(1, 1, 480, 272);
+	pros::screen::set_pen(COLOR_BLACK);
+	pros::screen::draw_rect(11, 34, 240, 50);
+	pros::screen::draw_rect(11, 60, 240, 200);
+	pros::screen::fill_circle(320, 68, 35);
+	pros::screen::fill_circle(420, 68, 35);
+	pros::screen::fill_circle(320, 150, 35);
+	pros::screen::fill_circle(420, 150, 35);
+	pros::screen::draw_rect(385, 200, 455, 230);
+	pros::screen::draw_rect(285, 200, 355, 230);
+	while(1){
+		pros::screen_touch_status_s_t draw = pros::screen::touch_status();
+		if ( 385 < draw.x && draw.x < 455 && draw.y > 33 && draw.y < 103){
+			pros::screen::erase_rect(12, 35, 239, 49);
+			pros::screen::set_pen(COLOR_CYAN);
+			pros::screen::print(TEXT_MEDIUM, 12, 34, "CLOSE SIDE AUTON");
+			}
+			pros::
+		else if ( 285 < draw.x && draw.x < 355 && draw.y > 33 && draw.y < 103){
+			pros::screen::erase_rect(12, 35, 239, 49);
+			pros::screen::set_pen(COLOR_CYAN);
+			pros::screen::print(TEXT_MEDIUM, 12, 34, "FAR SIDE AUTON");
+			}
+		else if ( 385 < draw.x && draw.x < 455 && draw.y > 33 && draw.y < 103){
+			pros::screen::erase_rect(12, 35, 239, 49);
+			pros::screen::set_pen(COLOR_CYAN);
+			pros::screen::print(TEXT_MEDIUM, 12, 34, "CLOSE SIDE AUTON");
+			}
+		}
+}*/
 /**
  * A callback function for LLEMU's center button.
  *
@@ -85,18 +144,36 @@ void on_center_button() {
 void initialize() {
 	pros::lcd::initialize();
 	spadeDrive.calibrate();
+	pros::screen::erase;
+	//pros::Task::create(autonSelection);
+	lv_style_copy(&buttonReleased, &lv_style_plain);
+	buttonReleased.body.main_color.blue;
+	buttonReleased.body.grad_color.green;
+	buttonReleased.body.radius = 0;
+	buttonReleased.text.color = LV_COLOR_WHITE;
+	
+	lv_style_copy(&buttonPressed, &lv_style_plain);
+	buttonPressed.body.main_color.blue;
+	buttonPressed.body.grad_color.green;
+	buttonPressed.body.radius = 0;
+	buttonPressed.text.color = LV_COLOR_WHITE;
 
-	//Print X, Y, & Heading to Brain
-	pros::Task screenTask([&](){
-		while(true){
-			lemlib::Pose pose = spadeDrive.getPose();
-			pros::lcd::print(0, "X: %F", pose.x);
-			pros::lcd::print(1, "Y: %F", pose.y);
-			pros::lcd::print(2, "Heading_Angle: %F", pose.theta);
-			pros::delay(10); 
-		}
-	});
-}
+	spade1 = lv_btn_create(lv_scr_act(), NULL);
+	lv_obj_set_free_num(spade1, 0);
+	lv_btn_set_action(spade1, LV_BTN_ACTION_CLICK, btn_click_action);
+	lv_btn_set_style(spade1, LV_KB_STYLE_BTN_REL, &buttonReleased);
+	lv_btn_set_style(spade1, LV_KB_STYLE_BTN_PR, &buttonPressed);
+	lv_obj_set_size(spade1, 200, 50);
+	lv_obj_align(spade1, NULL, LV_ALIGN_IN_TOP_MID, 10, 10);
+
+	describingBox = lv_label_create(spade1, NULL);
+	lv_label_set_text(describingBox, "Click This");
+
+	nameBox = lv_label_create(lv_scr_act(), NULL);
+	lv_label_set_text(nameBox, "Button Not Clicked");
+	lv_obj_align(nameBox, NULL, LV_ALIGN_CENTER, 10, 0);
+	}
+
 
 /**
  * Runs while the robot is in the disabled state of Field Management System or
@@ -114,7 +191,10 @@ void disabled() {}
  * This task will exit when the robot is enabled and autonomous or opcontrol
  * starts.
  */
-void competition_initialize() {}
+void competition_initialize() {
+
+
+}
 
 /**
  * Runs the user autonomous code. This function will be started in its own task
@@ -128,7 +208,17 @@ void competition_initialize() {}
  * from where it left off.
  */
 void autonomous() {
-	spadeDrive.setPose(0,0,0);
+	//Print X, Y, & Heading to Brain
+	pros::Task screenTask([&](){
+		while(true){
+			lemlib::Pose pose = spadeDrive.getPose();
+			pros::lcd::print(0, "X: %F", pose.x);
+			pros::lcd::print(1, "Y: %F", pose.y);
+			pros::lcd::print(2, "Heading_Angle: %F", pose.theta);
+			pros::delay(10); 
+		}
+	});
+	spadeDrive.setPose(5,5,0);
 	spadeDrive.turnTo(10,10,1000,false);
 }
 /**
@@ -144,15 +234,16 @@ void autonomous() {
  * operator control task will be stopped. Re-enabling the robot will restart the
  * task, not resume it from where it left off.
  */
+pros::Controller master(pros::E_CONTROLLER_MASTER);
 void opcontrol() {
-	pros::Controller master(pros::E_CONTROLLER_MASTER);
+	
 	while (true) {
 		//Fetch Analog Positions
 		int leftY = master.get_analog(ANALOG_LEFT_Y);
 		int rightX = master.get_analog(ANALOG_RIGHT_X);
 		
 		//Move the Robot
-		spadeDrive.arcade(leftY, rightX, 10);
+		spadeDrive.arcade(leftY, rightX);
 
 
 		pros::delay(10);
