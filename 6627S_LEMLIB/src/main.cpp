@@ -2,7 +2,10 @@
 #include "lemlib/api.hpp"
 #include "lemlib/logger/stdout.hpp"
 #include "pros/misc.h"
-
+#define Wings 'C'
+#define Blocker 'B'
+pros::ADIDigitalOut wings(Wings);
+pros::ADIDigitalOut lift(Blocker);
 lv_obj_t * nameBox;
 lv_obj_t * describingBox;
 lv_obj_t * spade1;
@@ -120,8 +123,7 @@ static lv_res_t btn_far_side(lv_obj_t * btn){
 // 		lv_label_set_text(nameBox, buffer);
 // 	}
 // 	return LV_RES_OK;
-// }
-pros::ADIDigitalIn 
+// } 
 pros::Controller spades(pros::E_CONTROLLER_MASTER);
 pros::Motor cata(2, MOTOR_GEAR_600, true);
 //Define IMU
@@ -163,22 +165,22 @@ lemlib::Drivetrain drivetrain{
 //PID for Linear Movement
 lemlib::ControllerSettings linearController(
     23,
-    75,
+    80,
     0.5,
-    400,
+    200,
     2,
     1500,
-    9
+    30
 );
 
 //PID for Angular Movement
 lemlib::ControllerSettings angularController(
+    9,
+	75,
+    0.5,
+    200,
     2,
-    10,
-    1,
-    100,
-    3,
-    500,
+    1500,
     0
 );
 
@@ -287,8 +289,18 @@ void competition_initialize() {
  * will be stopped. Re-enabling the robot will restart the task, not re-start it
  * from where it left off.
  */
+void takeToggle(int speed, bool direction){
+	if (direction == true)
+	{
+		intake = speed;
+	}
+	else if(direction == false){
+		intake = -speed;
+	}
+	
+}
 void autonomous() {
-	chassis.moveTo(5, 20, 90, 100000);
+	chassis.moveTo(0, 10, 0, 10000);
 	//Print X, Y, & Heading to Brain
 	// switch (auton)
 	// {
@@ -327,32 +339,32 @@ void autonomous() {
 
 
 
-// void pneumaticController(){
-//   bool wingsToggle = true;
-//   bool blockerToggle = true;
-//   while(true){
-//       if(wingsToggle == false && spades.get_digital(pros::controller_digital_e_t::E_CONTROLLER_DIGITAL_R2)){
-//         wings.set_value(true);
-//         pros::delay(100);
-//         wingsToggle = true;
-//       }
-//       else if (wingsToggle == true && spades.get_digital(pros::controller_digital_e_t::E_CONTROLLER_DIGITAL_R2)){
-//         wings.set_value(false);
-//         pros::delay(100);
-//         wingsToggle = false;
-//       }
-//       if(blockerToggle == false && spades.get_digital(pros::controller_digital_e_t::E_CONTROLLER_DIGITAL_A)){
-//         blocker.set_value(true);
-//         pros::delay(100);
-//         blockerToggle = true;
-//       }
-//       else if (blockerToggle == true && spades.get_digital(pros::controller_digital_e_t::E_CONTROLLER_DIGITAL_A)){
-//         blocker.set_value(false);
-//         blockerToggle = false;
-//       }
-//       pros::delay(100);
-//   }
-// }
+void pneumaticController(){
+  bool wingsToggle = true;
+  bool liftToggle = true;
+  while(true){
+      if(wingsToggle == false && spades.get_digital(pros::controller_digital_e_t::E_CONTROLLER_DIGITAL_R2)){
+        wings.set_value(true);
+        pros::delay(100);
+        wingsToggle = true;
+      }
+      else if (wingsToggle == true && spades.get_digital(pros::controller_digital_e_t::E_CONTROLLER_DIGITAL_R2)){
+        wings.set_value(false);
+        pros::delay(100);
+        wingsToggle = false;
+      }
+      if(liftToggle == false && spades.get_digital(pros::controller_digital_e_t::E_CONTROLLER_DIGITAL_A)){
+        lift.set_value(true);
+        pros::delay(100);
+        liftToggle = true;
+      }
+      else if (liftToggle == true && spades.get_digital(pros::controller_digital_e_t::E_CONTROLLER_DIGITAL_A)){
+        lift.set_value(false);
+        liftToggle = false;
+      }
+      pros::delay(100);
+  }
+}
 // void cardController(){
 // 	if(true){
 // 		lv_obj_clean(lv_scr_act());
@@ -365,7 +377,7 @@ void autonomous() {
 void cataController(){
 	while (true){
 		//If the back right bumper is Pressed Spin Cata
-		if(spades.get_digital(pros::controller_digital_e_t::E_CONTROLLER_DIGITAL_R2)){
+		if(spades.get_digital(pros::controller_digital_e_t::E_CONTROLLER_DIGITAL_R1)){
 			cata.move(80);
 		}
 		//When not pressing anthing stop the Cata
@@ -408,4 +420,5 @@ void opcontrol() {
 	pros::Task::create(driveController);
 	pros::Task::create(intakeController);
 	pros::Task::create(cataController);
+	pros::Task::create(pneumaticController);
 }
