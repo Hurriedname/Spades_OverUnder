@@ -3,111 +3,115 @@
 #include "lemlib/logger/stdout.hpp"
 #include "pros/misc.h"
 
-// lv_obj_t * nameBox;
-// lv_obj_t * describingBox;
-// lv_obj_t * spade1;
-// lv_obj_t * spade2;
-// lv_obj_t * spade3;
-// lv_obj_t * spade4;
-// lv_obj_t * nextButton;
-// lv_obj_t * previousButton;
-// lv_obj_t * page1;
-// lv_obj_t * page2;
-// lv_style_t buttonPressed;
-// lv_style_t buttonReleased;
-// LV_IMG_DECLARE(SpadeCardFull);
-// int auton;
-// static lv_res_t btn_far_side(lv_obj_t * btn){
-// 	uint8_t id = lv_obj_get_free_num(btn);
-// 	auton++;
-// 	switch(auton){
-// 		case(1):
-// 		lv_obj_clean(lv_scr_act());
-// 		spade4 = lv_imgbtn_create(lv_scr_act(), NULL);
-// 		lv_imgbtn_set_action(spade4, LV_BTN_ACTION_CLICK, btn_far_side);
-// 		lv_imgbtn_set_src(spade4, LV_IMGBTN_STYLE_REL, &SpadeCardFull);
-// 		lv_imgbtn_set_src(spade4, LV_IMGBTN_STYLE_PR, &SpadeCardFull);
-// 		lv_obj_set_style(spade4, &buttonPressed);
-// 		lv_obj_set_style(spade4, &buttonReleased);
-// 		lv_obj_align(spade4, NULL, LV_ALIGN_CENTER, 0,0);
-// 		nameBox = lv_label_create(lv_scr_act(), NULL);
-// 		lv_label_set_text(nameBox, "Far Side");
-// 		lv_obj_align(nameBox, NULL ,LV_ALIGN_CENTER, 0 , 0);
-// 		break;
+lv_obj_t * nameBox;
+lv_obj_t * describingBox;
+lv_obj_t * spade1;
+lv_obj_t * spade2;
+lv_obj_t * spade3;
+lv_obj_t * spade4;
+lv_obj_t * nextButton;
+lv_obj_t * previousButton;
+lv_obj_t * page1;
+lv_obj_t * page2;
+lv_style_t buttonPressed;
+lv_style_t buttonReleased;
+LV_IMG_DECLARE(SpadeCardFull);
+int auton;
+static lv_res_t btn_far_side(lv_obj_t * btn){
+	uint8_t id = lv_obj_get_free_num(btn);
+	auton++;
+	switch(auton){
+		case(1):
+		//Clear Screen
+		lv_obj_clean(lv_scr_act());
+		//Create Button
+		spade4 = lv_imgbtn_create(lv_scr_act(), NULL);
+		//Set Button Functions
+		lv_imgbtn_set_action(spade4, LV_BTN_ACTION_CLICK, btn_far_side);
+		lv_imgbtn_set_src(spade4, LV_IMGBTN_STYLE_REL, &SpadeCardFull);
+		lv_imgbtn_set_src(spade4, LV_IMGBTN_STYLE_PR, &SpadeCardFull);
+		lv_obj_set_style(spade4, &buttonPressed);
+		lv_obj_set_style(spade4, &buttonReleased);
+		lv_obj_align(spade4, NULL, LV_ALIGN_CENTER, 0,0);
+		//Set Textbox to Far Side 
+		nameBox = lv_label_create(lv_scr_act(), NULL);
+		lv_label_set_text(nameBox, "Far Side");
+		lv_obj_align(nameBox, NULL ,LV_ALIGN_CENTER, 0 , 0);
+		break;
 
-// 		case(2):
-// 		lv_obj_clean(lv_scr_act());
-// 		spade4 = lv_imgbtn_create(lv_scr_act(), NULL);
-// 		lv_imgbtn_set_action(spade4, LV_BTN_ACTION_CLICK, btn_far_side);
-// 		lv_imgbtn_set_src(spade4, LV_IMGBTN_STYLE_REL, &SpadeCardFull);
-// 		lv_imgbtn_set_src(spade4, LV_IMGBTN_STYLE_PR, &SpadeCardFull);
-// 		lv_obj_set_style(spade4, &buttonPressed);
-// 		lv_obj_set_style(spade4, &buttonReleased);
-// 		lv_obj_align(spade4, NULL, LV_ALIGN_CENTER, 0,0);
-// 		nameBox = lv_label_create(lv_scr_act(), NULL);
-// 		lv_label_set_text(nameBox, "Close Side");
-// 		lv_obj_align(nameBox, NULL ,LV_ALIGN_CENTER, 0 , 0);
-// 		break;
+		case(2):
+		lv_obj_clean(lv_scr_act());
+		spade4 = lv_imgbtn_create(lv_scr_act(), NULL);
+		lv_imgbtn_set_action(spade4, LV_BTN_ACTION_CLICK, btn_far_side);
+		lv_imgbtn_set_src(spade4, LV_IMGBTN_STYLE_REL, &SpadeCardFull);
+		lv_imgbtn_set_src(spade4, LV_IMGBTN_STYLE_PR, &SpadeCardFull);
+		lv_obj_set_style(spade4, &buttonPressed);
+		lv_obj_set_style(spade4, &buttonReleased);
+		lv_obj_align(spade4, NULL, LV_ALIGN_CENTER, 0,0);
+		nameBox = lv_label_create(lv_scr_act(), NULL);
+		lv_label_set_text(nameBox, "Close Side");
+		lv_obj_align(nameBox, NULL ,LV_ALIGN_CENTER, 0 , 0);
+		break;
 
-// 		case(3):
-// 		lv_obj_clean(lv_scr_act());
-// 		spade4 = lv_imgbtn_create(lv_scr_act(), NULL);
-// 		lv_imgbtn_set_action(spade4, LV_BTN_ACTION_CLICK, btn_far_side);
-// 		lv_imgbtn_set_src(spade4, LV_IMGBTN_STYLE_REL, &SpadeCardFull);
-// 		lv_imgbtn_set_src(spade4, LV_IMGBTN_STYLE_PR, &SpadeCardFull);
-// 		lv_obj_set_style(spade4, &buttonPressed);
-// 		lv_obj_set_style(spade4, &buttonReleased);
-// 		lv_obj_align(spade4, NULL, LV_ALIGN_CENTER, 0,0);
-// 		nameBox = lv_label_create(lv_scr_act(), NULL);
-// 		lv_label_set_text(nameBox, "Far Side Elim");
-// 		lv_obj_align(nameBox, NULL ,LV_ALIGN_CENTER, 0 , 0);
-// 		break;
+		case(3):
+		lv_obj_clean(lv_scr_act());
+		spade4 = lv_imgbtn_create(lv_scr_act(), NULL);
+		lv_imgbtn_set_action(spade4, LV_BTN_ACTION_CLICK, btn_far_side);
+		lv_imgbtn_set_src(spade4, LV_IMGBTN_STYLE_REL, &SpadeCardFull);
+		lv_imgbtn_set_src(spade4, LV_IMGBTN_STYLE_PR, &SpadeCardFull);
+		lv_obj_set_style(spade4, &buttonPressed);
+		lv_obj_set_style(spade4, &buttonReleased);
+		lv_obj_align(spade4, NULL, LV_ALIGN_CENTER, 0,0);
+		nameBox = lv_label_create(lv_scr_act(), NULL);
+		lv_label_set_text(nameBox, "Far Side Elim");
+		lv_obj_align(nameBox, NULL ,LV_ALIGN_CENTER, 0 , 0);
+		break;
 
-// 		case(4):
-// 		lv_obj_clean(lv_scr_act());
-// 		spade4 = lv_imgbtn_create(lv_scr_act(), NULL);
-// 		lv_imgbtn_set_action(spade4, LV_BTN_ACTION_CLICK, btn_far_side);
-// 		lv_imgbtn_set_src(spade4, LV_IMGBTN_STYLE_REL, &SpadeCardFull);
-// 		lv_imgbtn_set_src(spade4, LV_IMGBTN_STYLE_PR, &SpadeCardFull);
-// 		lv_obj_set_style(spade4, &buttonPressed);
-// 		lv_obj_set_style(spade4, &buttonReleased);
-// 		lv_obj_align(spade4, NULL, LV_ALIGN_CENTER, 0,0);
-// 		nameBox = lv_label_create(lv_scr_act(), NULL);
-// 		lv_label_set_text(nameBox, "Close Side Elim");
-// 		lv_obj_align(nameBox, NULL ,LV_ALIGN_CENTER, 0 , 0);
-// 		break;
+		case(4):
+		lv_obj_clean(lv_scr_act());
+		spade4 = lv_imgbtn_create(lv_scr_act(), NULL);
+		lv_imgbtn_set_action(spade4, LV_BTN_ACTION_CLICK, btn_far_side);
+		lv_imgbtn_set_src(spade4, LV_IMGBTN_STYLE_REL, &SpadeCardFull);
+		lv_imgbtn_set_src(spade4, LV_IMGBTN_STYLE_PR, &SpadeCardFull);
+		lv_obj_set_style(spade4, &buttonPressed);
+		lv_obj_set_style(spade4, &buttonReleased);
+		lv_obj_align(spade4, NULL, LV_ALIGN_CENTER, 0,0);
+		nameBox = lv_label_create(lv_scr_act(), NULL);
+		lv_label_set_text(nameBox, "Close Side Elim");
+		lv_obj_align(nameBox, NULL ,LV_ALIGN_CENTER, 0 , 0);
+		break;
 
-// 		case(5):
-// 		lv_obj_clean(lv_scr_act());
-// 		spade4 = lv_imgbtn_create(lv_scr_act(), NULL);
-// 		lv_imgbtn_set_action(spade4, LV_BTN_ACTION_CLICK, btn_far_side);
-// 		lv_imgbtn_set_src(spade4, LV_IMGBTN_STYLE_REL, &SpadeCardFull);
-// 		lv_imgbtn_set_src(spade4, LV_IMGBTN_STYLE_PR, &SpadeCardFull);
-// 		lv_obj_set_style(spade4, &buttonPressed);
-// 		lv_obj_set_style(spade4, &buttonReleased);
-// 		lv_obj_align(spade4, NULL, LV_ALIGN_CENTER, 0,0);
-// 		nameBox = lv_label_create(lv_scr_act(), NULL);
-// 		lv_label_set_text(nameBox, "Skills");
-// 		lv_obj_align(nameBox, NULL ,LV_ALIGN_CENTER, 0 , 0);
-// 		break;
+		case(5):
+		lv_obj_clean(lv_scr_act());
+		spade4 = lv_imgbtn_create(lv_scr_act(), NULL);
+		lv_imgbtn_set_action(spade4, LV_BTN_ACTION_CLICK, btn_far_side);
+		lv_imgbtn_set_src(spade4, LV_IMGBTN_STYLE_REL, &SpadeCardFull);
+		lv_imgbtn_set_src(spade4, LV_IMGBTN_STYLE_PR, &SpadeCardFull);
+		lv_obj_set_style(spade4, &buttonPressed);
+		lv_obj_set_style(spade4, &buttonReleased);
+		lv_obj_align(spade4, NULL, LV_ALIGN_CENTER, 0,0);
+		nameBox = lv_label_create(lv_scr_act(), NULL);
+		lv_label_set_text(nameBox, "Skills");
+		lv_obj_align(nameBox, NULL ,LV_ALIGN_CENTER, 0 , 0);
+		break;
 
-// 		case(6):
-// 		auton = 1;
-// 		lv_obj_clean(lv_scr_act());
-// 		spade4 = lv_imgbtn_create(lv_scr_act(), NULL);
-// 		lv_imgbtn_set_action(spade4, LV_BTN_ACTION_CLICK, btn_far_side);
-// 		lv_imgbtn_set_src(spade4, LV_IMGBTN_STYLE_REL, &SpadeCardFull);
-// 		lv_imgbtn_set_src(spade4, LV_IMGBTN_STYLE_PR, &SpadeCardFull);
-// 		lv_obj_set_style(spade4, &buttonPressed);
-// 		lv_obj_set_style(spade4, &buttonReleased);
-// 		lv_obj_align(spade4, NULL, LV_ALIGN_CENTER, 0,0);
-// 		nameBox = lv_label_create(lv_scr_act(), NULL);
-// 		lv_label_set_text(nameBox, "Far Side");
-// 		lv_obj_align(nameBox, NULL ,LV_ALIGN_CENTER, 0 , 0);
-// 		break;
-// 	}
-// 	return LV_RES_OK;
-// }
+		case(6):
+		auton = 1;
+		lv_obj_clean(lv_scr_act());
+		spade4 = lv_imgbtn_create(lv_scr_act(), NULL);
+		lv_imgbtn_set_action(spade4, LV_BTN_ACTION_CLICK, btn_far_side);
+		lv_imgbtn_set_src(spade4, LV_IMGBTN_STYLE_REL, &SpadeCardFull);
+		lv_imgbtn_set_src(spade4, LV_IMGBTN_STYLE_PR, &SpadeCardFull);
+		lv_obj_set_style(spade4, &buttonPressed);
+		lv_obj_set_style(spade4, &buttonReleased);
+		lv_obj_align(spade4, NULL, LV_ALIGN_CENTER, 0,0);
+		nameBox = lv_label_create(lv_scr_act(), NULL);
+		lv_label_set_text(nameBox, "Far Side");
+		lv_obj_align(nameBox, NULL ,LV_ALIGN_CENTER, 0 , 0);
+		break;
+	}
+	return LV_RES_OK;
+}
 // static lv_res_t btn_click_action(lv_obj_t * btn){
 // 	uint8_t id = lv_obj_get_free_num(btn);
 // 	if(id == 0){
@@ -117,6 +121,7 @@
 // 	}
 // 	return LV_RES_OK;
 // }
+pros::ADIDigitalIn 
 pros::Controller spades(pros::E_CONTROLLER_MASTER);
 pros::Motor cata(2, MOTOR_GEAR_600, true);
 //Define IMU
@@ -140,7 +145,8 @@ pros::Motor_Group rightSideDrive({frontRight, middleRight, backRight});
 pros::Motor intake(1, MOTOR_GEAR_600, true);
 
 //pros::Imu intertialSensor();
-pros::Rotation verticalSensor(11);
+pros::Rotation verticalSensor(11, true);
+
 lemlib::TrackingWheel verticalTracker(&verticalSensor , lemlib::Omniwheel::NEW_275_HALF , 0 );
 //Define Odomsensors
 lemlib::OdomSensors sensors(&verticalTracker, nullptr, nullptr, nullptr, &inertialSensor);
@@ -148,7 +154,7 @@ lemlib::OdomSensors sensors(&verticalTracker, nullptr, nullptr, nullptr, &inerti
 lemlib::Drivetrain drivetrain{
 	&leftSideDrive, //Left Side of Drive
 	&rightSideDrive, //Right Side of Drive
-	11, //Wheel to Wheel Distance in inches
+	10.5, //Wheel to Wheel Distance in inches
 	lemlib::Omniwheel::NEW_325, //Wheel Size in inches
 	450, //Wheel RPM
 	8
@@ -156,13 +162,13 @@ lemlib::Drivetrain drivetrain{
 
 //PID for Linear Movement
 lemlib::ControllerSettings linearController(
-    10,
-    30,
-    1,
-    100,
-    3,
-    500,
-    20
+    23,
+    75,
+    0.5,
+    400,
+    2,
+    1500,
+    9
 );
 
 //PID for Angular Movement
@@ -200,6 +206,7 @@ void on_center_button() {
  * All other competition modes are blocked by initialize; it is recommended
  * to keep execution time for this mode under a few seconds.
  */
+
 void screen(){lemlib::Pose pose(0,0,0);
 		while(true){
 			pros::lcd::print(0, "X: %F", pose.x);
@@ -211,7 +218,16 @@ void screen(){lemlib::Pose pose(0,0,0);
 void initialize() {
 	pros::lcd::initialize();
 	chassis.calibrate();
-	pros::Task::create(screen);
+	pros::Task screenTask([&](){
+	lemlib::Pose pose(0,0,0);
+	while (true){
+		pros::lcd::print(0, "X:%f", chassis.getPose().x);
+		pros::lcd::print(1, "Y:%f", chassis.getPose().y);
+		pros::lcd::print(2, "Theta:%f", chassis.getPose().theta);
+		lemlib::telemetrySink()->info("Chassis pose: {}", chassis.getPose());
+		pros::delay(50);	
+	}
+});
 }
 
 
@@ -272,8 +288,7 @@ void competition_initialize() {
  * from where it left off.
  */
 void autonomous() {
-	chassis.moveTo(10, 0, 180, 100000, false);
-	pros::delay(2000);
+	chassis.moveTo(5, 20, 90, 100000);
 	//Print X, Y, & Heading to Brain
 	// switch (auton)
 	// {
@@ -376,7 +391,8 @@ void intakeController(){
 			intake = 0;
 			}
   		}
-	}
+}
+//Task for Drive
 void driveController(){
 	while (true){
 		//Fetch Analog Positions
@@ -388,6 +404,7 @@ void driveController(){
 		}
 }
 void opcontrol() {
+
 	pros::Task::create(driveController);
 	pros::Task::create(intakeController);
 	pros::Task::create(cataController);
