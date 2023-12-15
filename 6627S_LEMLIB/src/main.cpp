@@ -165,23 +165,23 @@ lemlib::Drivetrain drivetrain{
 //PID for Linear Movement
 lemlib::ControllerSettings linearController(
     23,
-    80,
+    105,
     0.5,
     200,
     2,
     1500,
-    30
+    5
 );
 
 //PID for Angular Movement
 lemlib::ControllerSettings angularController(
-    9,
-	75,
-    0.5,
-    200,
-    2,
-    1500,
-    0
+    10,// 9,
+	111,// 120,
+    0.5,// 0.8,
+    100,// 70,
+    2,// 4,
+    1000,// 1500,
+    0// 0
 );
 
 //Combine All Definitions
@@ -300,7 +300,7 @@ void takeToggle(int speed, bool direction){
 	
 }
 void autonomous() {
-	chassis.moveTo(0, 10, 0, 10000);
+	chassis.turnTo(30,0,10000);
 	//Print X, Y, & Heading to Brain
 	// switch (auton)
 	// {
