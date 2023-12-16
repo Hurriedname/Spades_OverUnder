@@ -159,7 +159,7 @@ lemlib::Drivetrain drivetrain{
 	10.5, //Wheel to Wheel Distance in inches
 	lemlib::Omniwheel::NEW_325, //Wheel Size in inches
 	450, //Wheel RPM
-	8
+	15
 	};
 
 //PID for Linear Movement
@@ -175,8 +175,8 @@ lemlib::ControllerSettings linearController(
 
 //PID for Angular Movement
 lemlib::ControllerSettings angularController(
-    10,// 9,
-	111,// 120,
+    5,// 15,// 10,// 9,
+	35,// 155,// 111,// 120,
     0.5,// 0.8,
     100,// 70,
     2,// 4,
@@ -289,6 +289,7 @@ void competition_initialize() {
  * will be stopped. Re-enabling the robot will restart the task, not re-start it
  * from where it left off.
  */
+//Function to Toggle Intake In Auton
 void takeToggle(int speed, bool direction){
 	if (direction == true)
 	{
@@ -300,7 +301,8 @@ void takeToggle(int speed, bool direction){
 	
 }
 void autonomous() {
-	chassis.turnTo(30,0,10000);
+	takeToggle(100, true);
+	chassis.moveTo(10,-10, 270, 10000, false);
 	//Print X, Y, & Heading to Brain
 	// switch (auton)
 	// {
