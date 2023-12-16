@@ -2,10 +2,14 @@
 #include "lemlib/api.hpp"
 #include "lemlib/logger/stdout.hpp"
 #include "pros/misc.h"
+#include "autonSelector/case.hpp"
+//Define 3 Wire ADI ports for Pnematics
 #define Wings 'C'
 #define Blocker 'B'
 pros::ADIDigitalOut wings(Wings);
 pros::ADIDigitalOut lift(Blocker);
+
+//Defining Objects & Images
 lv_obj_t * nameBox;
 lv_obj_t * describingBox;
 lv_obj_t * spade1;
@@ -18,13 +22,14 @@ lv_obj_t * page1;
 lv_obj_t * page2;
 lv_style_t buttonPressed;
 lv_style_t buttonReleased;
-LV_IMG_DECLARE(SpadeCardFull);
+LV_IMG_DECLARE(SpadeCardFull)
+
 int auton;
 static lv_res_t btn_far_side(lv_obj_t * btn){
 	uint8_t id = lv_obj_get_free_num(btn);
 	auton++;
 	switch(auton){
-		case(1):
+		case(farSide):
 		//Clear Screen
 		lv_obj_clean(lv_scr_act());
 		//Create Button
@@ -42,21 +47,25 @@ static lv_res_t btn_far_side(lv_obj_t * btn){
 		lv_obj_align(nameBox, NULL ,LV_ALIGN_CENTER, 0 , 0);
 		break;
 
-		case(2):
+		case(closeSide):
+		//Clear Screen
 		lv_obj_clean(lv_scr_act());
+		//Recreate Button
 		spade4 = lv_imgbtn_create(lv_scr_act(), NULL);
+		//Redefine Button Functions
 		lv_imgbtn_set_action(spade4, LV_BTN_ACTION_CLICK, btn_far_side);
 		lv_imgbtn_set_src(spade4, LV_IMGBTN_STYLE_REL, &SpadeCardFull);
 		lv_imgbtn_set_src(spade4, LV_IMGBTN_STYLE_PR, &SpadeCardFull);
 		lv_obj_set_style(spade4, &buttonPressed);
 		lv_obj_set_style(spade4, &buttonReleased);
+		//Reposition Button
 		lv_obj_align(spade4, NULL, LV_ALIGN_CENTER, 0,0);
 		nameBox = lv_label_create(lv_scr_act(), NULL);
 		lv_label_set_text(nameBox, "Close Side");
 		lv_obj_align(nameBox, NULL ,LV_ALIGN_CENTER, 0 , 0);
 		break;
 
-		case(3):
+		case(farSideElim):
 		lv_obj_clean(lv_scr_act());
 		spade4 = lv_imgbtn_create(lv_scr_act(), NULL);
 		lv_imgbtn_set_action(spade4, LV_BTN_ACTION_CLICK, btn_far_side);
@@ -70,7 +79,7 @@ static lv_res_t btn_far_side(lv_obj_t * btn){
 		lv_obj_align(nameBox, NULL ,LV_ALIGN_CENTER, 0 , 0);
 		break;
 
-		case(4):
+		case(closeSideElim):
 		lv_obj_clean(lv_scr_act());
 		spade4 = lv_imgbtn_create(lv_scr_act(), NULL);
 		lv_imgbtn_set_action(spade4, LV_BTN_ACTION_CLICK, btn_far_side);
@@ -84,7 +93,7 @@ static lv_res_t btn_far_side(lv_obj_t * btn){
 		lv_obj_align(nameBox, NULL ,LV_ALIGN_CENTER, 0 , 0);
 		break;
 
-		case(5):
+		case(skills):
 		lv_obj_clean(lv_scr_act());
 		spade4 = lv_imgbtn_create(lv_scr_act(), NULL);
 		lv_imgbtn_set_action(spade4, LV_BTN_ACTION_CLICK, btn_far_side);
@@ -159,7 +168,7 @@ lemlib::Drivetrain drivetrain{
 	10.5, //Wheel to Wheel Distance in inches
 	lemlib::Omniwheel::NEW_325, //Wheel Size in inches
 	450, //Wheel RPM
-	15
+	50
 	};
 
 //PID for Linear Movement
@@ -301,7 +310,6 @@ void takeToggle(int speed, bool direction){
 	
 }
 void autonomous() {
-	takeToggle(100, true);
 	chassis.moveTo(10,-10, 270, 10000, false);
 	//Print X, Y, & Heading to Brain
 	// switch (auton)
@@ -340,32 +348,33 @@ void autonomous() {
  */
 
 
-
+//Function for Pneumatics in Drive
 void pneumaticController(){
-  bool wingsToggle = true;
-  bool liftToggle = true;
-  while(true){
-      if(wingsToggle == false && spades.get_digital(pros::controller_digital_e_t::E_CONTROLLER_DIGITAL_R2)){
-        wings.set_value(true);
-        pros::delay(100);
-        wingsToggle = true;
-      }
-      else if (wingsToggle == true && spades.get_digital(pros::controller_digital_e_t::E_CONTROLLER_DIGITAL_R2)){
-        wings.set_value(false);
-        pros::delay(100);
-        wingsToggle = false;
-      }
-      if(liftToggle == false && spades.get_digital(pros::controller_digital_e_t::E_CONTROLLER_DIGITAL_A)){
-        lift.set_value(true);
-        pros::delay(100);
-        liftToggle = true;
-      }
-      else if (liftToggle == true && spades.get_digital(pros::controller_digital_e_t::E_CONTROLLER_DIGITAL_A)){
-        lift.set_value(false);
-        liftToggle = false;
-      }
-      pros::delay(100);
-  }
+	//Booleans for 
+  	bool wingsToggle = true;
+  	bool liftToggle = true;
+  	while(true){
+    	if(wingsToggle == false && spades.get_digital(pros::controller_digital_e_t::E_CONTROLLER_DIGITAL_R2)){
+        	wings.set_value(true);
+        	pros::delay(100);
+        	wingsToggle = true;
+    		}
+      	else if (wingsToggle == true && spades.get_digital(pros::controller_digital_e_t::E_CONTROLLER_DIGITAL_R2)){
+        	wings.set_value(false);
+        	pros::delay(100);
+        	wingsToggle = false;
+    		}
+      	if(liftToggle == false && spades.get_digital(pros::controller_digital_e_t::E_CONTROLLER_DIGITAL_A)){
+        	lift.set_value(true);
+        	pros::delay(100);
+        	liftToggle = true;
+      		}
+      	else if (liftToggle == true && spades.get_digital(pros::controller_digital_e_t::E_CONTROLLER_DIGITAL_A)){
+        	lift.set_value(false);
+        	liftToggle = false;
+      		}
+      	pros::delay(100);
+    }
 }
 // void cardController(){
 // 	if(true){
